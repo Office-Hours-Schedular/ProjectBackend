@@ -10,6 +10,9 @@ const emailRegex = (email) =>
 const atLeastOneUpperCaseValidation = (password) =>
   RegExp("[A-Z]+").test(password);
 
+const hourMinutesRegex = (hourMinutes) =>
+    RegExp("^(?:\\d|[01]\\d|2[0-3]):[0-5]\\d$")
+
 const atLeastOneLowerCaseValidation = (password) =>
   RegExp("[a-z]+").test(password);
 
@@ -28,4 +31,5 @@ module.exports = {
   fullPasswordValidation,
   emailRegex,
   nameRegex,
+  hourMinutesRegex
 };

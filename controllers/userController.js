@@ -102,30 +102,51 @@ exports.login = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
   const token = req.get("Authorization")
+  const userId = req.params.userId
 
   if (!token)
     return sendError(res, ERRORS.ERROR_TOKEN_MISSING, 401)
 
+  let verifiedToken
+  try {
+    verifiedToken = authorization.verifyJWT(token)
+    if (verifiedToken.user._id !== userId)
+      return sendError(res, ERRORS.ERROR_INVALID_TOKEN)
+  } catch (error) {
+    return sendError(res, ERRORS.ERROR_INVALID_TOKEN)
+  }
+
+  try {
+    const user = users.find(user => user._id === userId)
+
+    if (!user)
+      return sendError(res, ERRORS.ERROR_NO_SUCH_USER_FOUND, 404)
+
+    res.send({...user, password: undefined})
+
+  } catch (error) {
+    return sendError(res,ERRORS.ERROR_INTERNAL_SERVER_ERROR, 500)
+  }
+}
+
+
+exports.getProfessors = async (req, res) => {
+  const token = req.get("Authorization")
+
+  if (!token)
+    return sendError(res, ERRORS.ERROR_TOKEN_MISSING, 401)
   try {
     authorization.verifyJWT(token)
   } catch (error) {
     return sendError(res, ERRORS.ERROR_INVALID_TOKEN)
   }
 
-  const userId = req.params.userId
-
-  if (!userId)
-    return sendError(res, ERRORS.ERROR_NO_SUCH_USER_FOUND)
-
   try {
-    const user = users.find(user => user._id === userId)
-    console.log(userId)
-    console.log(user)
+    const professors = users.filter(user => user.occupation === OCCUPATION_STATUS.PROFESSOR).map(user =>
+        ({name: user.name, lastname: user.lastname, email: user.email, _id: user._id})
+    )
 
-    if (!user)
-      return sendError(res, ERRORS.ERROR_NO_SUCH_USER_FOUND, 404)
-
-    res.send({...user, password: undefined})
+    res.send({professors})
 
   } catch (error) {
     return sendError(res,ERRORS.ERROR_INTERNAL_SERVER_ERROR, 500)

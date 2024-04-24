@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const cors = require("cors");
 const userRoutes = require("./routes/user.js")
+const schedule = require("./routes/schedule.js")
 
 const app = express();
 const PORT = 3000;
@@ -12,5 +13,6 @@ app.use(bodyParser.json());
 app.use(helmet())
 
 app.use("/api", userRoutes)
+app.use("/api", schedule)
 
 app.listen(PORT, () => console.log("Listening"));
