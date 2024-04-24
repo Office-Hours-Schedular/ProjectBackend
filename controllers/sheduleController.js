@@ -343,7 +343,7 @@ exports.addStudentItem = async (req, res) => {
 
 exports.removeStudentItem = async (req, res) => {
     const userId = req.params.userId
-    const itemId = req.params.itemId
+    const itemId = req.body.itemId
 
     try {
         const token = req.get("Authorization")
