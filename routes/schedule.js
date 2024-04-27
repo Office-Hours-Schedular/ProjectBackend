@@ -18,7 +18,7 @@ router.get("/schedule/:professorId", scheduleController.getProfAndStudItems);
 
 router.post("/student/schedule/:userId", scheduleController.addStudentItem);
 
-router.post("/student/schedule/:userId", scheduleController.getStudentItems);
+router.get("/student/schedule/:userId", scheduleController.getStudentItems);
 
 router.delete(
   "/student/schedule/:userId",
