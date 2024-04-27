@@ -188,7 +188,7 @@ exports.removeProfessorItem = async (req, res) => {
       _id: itemId,
       professor_id: userId,
     });
-    if (itemIdx === -1) {
+    if (!itemIdx || itemIdx === -1) {
       return sendError(res, ERRORS.ERROR_ITEM_NOT_FOUND);
     }
     // if (professorItems[itemIdx].professor_id !== userId) {
