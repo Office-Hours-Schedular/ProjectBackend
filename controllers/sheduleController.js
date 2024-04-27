@@ -20,8 +20,13 @@ exports.addProfessorItem = async (req, res) => {
   const userId = req.params.userId;
   const itemName = req.body.item_name;
   const recurring = req.body.recurring;
-  const startTime = req.body.start_time;
-  const endTime = req.body.end_time;
+  let startTime = req.body.start_time;
+  startTime = new Date(startTime);
+  // set end time is 1 hour after the start time
+  let endTime = new Date(startTime);
+  endTime.setHours(endTime.getHours() + 1);
+  endTime = endTime.toISOString();
+  startTime = startTime.toISOString();
 
   try {
     const token = req.get("Authorization");

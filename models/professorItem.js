@@ -24,7 +24,7 @@ const professorItemSchema = new mongoose.Schema({
     },
     endTime: {
         type: Date,
-        required: true
+        required: false
     },
     date_created: {
         type: Date,
